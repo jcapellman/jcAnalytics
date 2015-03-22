@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jcANALYTICS.PCL", "jcANALYTICS.PCL\jcANALYTICS.PCL.csproj", "{E0D67BEB-D8B0-4D4C-83F7-3F2DD60E77CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jcANALYTICS.Lib", "jcANALYTICS.Lib\jcANALYTICS.Lib.csproj", "{ED21E2C2-A16D-4D10-8CE6-8EB7ADB26854}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jcANALYTICS.ConsoleTests", "jcANALYTICS.ConsoleTests\jcANALYTICS.ConsoleTests.csproj", "{4C31B35A-9BAF-48AE-BB4D-5EE779BFA3CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0D67BEB-D8B0-4D4C-83F7-3F2DD60E77CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D67BEB-D8B0-4D4C-83F7-3F2DD60E77CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D67BEB-D8B0-4D4C-83F7-3F2DD60E77CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D67BEB-D8B0-4D4C-83F7-3F2DD60E77CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED21E2C2-A16D-4D10-8CE6-8EB7ADB26854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED21E2C2-A16D-4D10-8CE6-8EB7ADB26854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED21E2C2-A16D-4D10-8CE6-8EB7ADB26854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED21E2C2-A16D-4D10-8CE6-8EB7ADB26854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C31B35A-9BAF-48AE-BB4D-5EE779BFA3CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C31B35A-9BAF-48AE-BB4D-5EE779BFA3CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C31B35A-9BAF-48AE-BB4D-5EE779BFA3CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C31B35A-9BAF-48AE-BB4D-5EE779BFA3CD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		BuildVersion_BuildVersioningStyle = None.None.Increment.MonthAndDayStamp
+		BuildVersion_UpdateAssemblyVersion = True
+		BuildVersion_UpdateFileVersion = True
+		BuildVersion_AssemblyInfoFilename = jcANALYTICS.Lib\Properties\AssemblyInfo.cs
+	EndGlobalSection
+EndGlobal
