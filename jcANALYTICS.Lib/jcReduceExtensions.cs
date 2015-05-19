@@ -1,13 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace jcANALYTICS.Lib {
-    public class jcReduce<T> {
-        public jcReduce() { }
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public static class jcReduceExtensions {
+        private const int ParallelThreshold = 50000;
 
-        public List<T> Reduce(List<T> originalSet) {
+        public static List<T> ReduceAuto<T>(this List<T> originalSet) {
+            return (originalSet.Count() > ParallelThreshold ? originalSet.ReduceParallel() : originalSet.Reduce());
+        }
+
+        public static List<T> Reduce<T>(this List<T> originalSet) {
             var reduced = ImmutableDictionary<int, T>.Empty;
 
             foreach (var item in originalSet) {
@@ -23,7 +29,7 @@ namespace jcANALYTICS.Lib {
             return reduced.Values.ToList();
         }
 
-        public List<T> ReduceParallel(List<T> originalSet) {
+        public static List<T> ReduceParallel<T>(this List<T> originalSet) {
             var reduced = ImmutableDictionary<int, T>.Empty;
             
             Parallel.ForEach(originalSet, item => {

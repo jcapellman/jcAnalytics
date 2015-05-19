@@ -59,15 +59,15 @@ namespace jcANALYTICS.ConsoleTests {
 
         private static void reductionTest(List<Users> users) {
             var now = DateTime.Now;
-            
-            var reduced = new jcReduce<Users>().ReduceParallel(users);
+
+            var reduced = users.ReduceParallel();
 
             Console.WriteLine(String.Format("Parallel Test: {0} seconds", DateTime.Now.Subtract(now).TotalSeconds));
             Console.WriteLine(String.Format("Reduced from {0} to {1}", users.Count(), reduced.Count()));
 
             now  = DateTime.Now;
 
-            reduced = new jcReduce<Users>().Reduce(users);
+            reduced = users.Reduce();
 
             Console.WriteLine(String.Format("Single Thread Test: {0} seconds", DateTime.Now.Subtract(now).TotalSeconds));
             Console.WriteLine(String.Format("Reduced from {0} to {1}", users.Count(), reduced.Count()));
