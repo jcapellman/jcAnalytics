@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Attributes\TallyAttribute.cs" />
     <Compile Include="jcAEngine.cs" />
+    <Compile Include="jcReduce.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transports\Internal\jcAnalyticsGroupItem.cs" />
     <Compile Include="Transports\jcAnalyticsBaseObject.cs" />
