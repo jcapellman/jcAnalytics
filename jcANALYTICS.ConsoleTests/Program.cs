@@ -80,10 +80,10 @@ namespace jcANALYTICS.ConsoleTests {
 
             now = DateTime.Now;
 
-            reduced = users.ReduceParallelOpt();
+            reduced = users.ReduceParallelOptimized(false);
 
             var optTime = DateTime.Now.Subtract(now).TotalSeconds;
-
+            
             Console.WriteLine("Parallel\tSingle\t\tAuto\t\tOptimized");
             Console.WriteLine($"{parallelTime}\t{singleTime}\t{autoTime}\t{optTime}\n");
 
