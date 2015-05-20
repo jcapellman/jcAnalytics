@@ -62,15 +62,32 @@ namespace jcANALYTICS.ConsoleTests {
 
             var reduced = users.ReduceParallel();
 
-            Console.WriteLine(String.Format("Parallel Test: {0} seconds", DateTime.Now.Subtract(now).TotalSeconds));
-            Console.WriteLine(String.Format("Reduced from {0} to {1}", users.Count(), reduced.Count()));
+            var parallelTime = DateTime.Now.Subtract(now).TotalSeconds;
+            
+            Console.WriteLine($"Reduced from {users.Count()} to {reduced.Count()}");
 
             now  = DateTime.Now;
 
             reduced = users.Reduce();
 
-            Console.WriteLine(String.Format("Single Thread Test: {0} seconds", DateTime.Now.Subtract(now).TotalSeconds));
-            Console.WriteLine(String.Format("Reduced from {0} to {1}", users.Count(), reduced.Count()));
+            var singleTime = DateTime.Now.Subtract(now).TotalSeconds;
+            
+            now = DateTime.Now;
+
+            reduced = users.ReduceAuto();
+
+            var autoTime = DateTime.Now.Subtract(now).TotalSeconds;
+
+            now = DateTime.Now;
+
+            reduced = users.ReduceParallelOpt();
+
+            var optTime = DateTime.Now.Subtract(now).TotalSeconds;
+
+            Console.WriteLine("Parallel\tSingle\t\tAuto\t\tOptimized");
+            Console.WriteLine($"{parallelTime}\t{singleTime}\t{autoTime}\t{optTime}\n");
+
+            Console.WriteLine($"Reduced from {users.Count()} to {reduced.Count()}");
         }
 
         static void Main(string[] args) {

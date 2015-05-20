@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace jcANALYTICS.Lib {
             return (originalSet.Count() > ParallelThreshold ? originalSet.ReduceParallel() : originalSet.Reduce());
         }
 
+        
         public static List<T> Reduce<T>(this List<T> originalSet) {
             var reduced = ImmutableDictionary<int, T>.Empty;
 
@@ -27,6 +29,22 @@ namespace jcANALYTICS.Lib {
             }
 
             return reduced.Values.ToList();
+        }
+
+        public static List<T> ReduceParallelOptimized<T>(this List<T> originalSet) {
+            var hashes = new ConcurrentDictionary<int, T>();
+            
+            Parallel.ForEach(originalSet, item => {
+                var hash = item.GetHashCode();
+
+                if (hashes.ContainsKey(hash)) {
+                    return;
+                }
+
+                hashes.TryAdd(hash, item);
+            });
+
+            return hashes.Values.ToList();
         }
 
         public static List<T> ReduceParallel<T>(this List<T> originalSet) {
