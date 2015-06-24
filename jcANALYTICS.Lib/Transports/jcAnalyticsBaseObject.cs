@@ -27,6 +27,24 @@ namespace jcANALYTICS.Lib.Transports {
             return true;
         }
 
+        public string GetAttributeName<T>(string property) {
+            var props = typeof(T).GetProperties();
+
+            foreach (var prop in props) {
+                var attrs = prop.GetCustomAttributes(true);
+
+                foreach (var attr in attrs) {
+                    var authAttr = attr as TallyAttribute;
+
+                    if (authAttr != null) {
+                        return authAttr.Name;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public override int GetHashCode() {
             BinaryFormatter bf = new BinaryFormatter();
             MemoryStream ms = new MemoryStream();
