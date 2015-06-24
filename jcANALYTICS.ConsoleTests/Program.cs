@@ -27,9 +27,7 @@ namespace jcANALYTICS.ConsoleTests {
 
         private static string print(Users user) { return String.Format("Has Android? {0} - Has iPhone? {1} - Has Windows Phone? {2} - Lives in Maryland? {3}", user.HasAndroid.Value, user.HasIOS.Value, user.HasWinPhone.Value, user.LivesInMaryland.Value); }
 
-        static void Main(string[] args) {
-            var users = generateData(Convert.ToInt32(args[0]));
-
+        private static void predictionTest(List<Users> users) {
             var engine = new jcAEngine<Users>();
 
             var now = DateTime.Now;
@@ -44,7 +42,7 @@ namespace jcANALYTICS.ConsoleTests {
             Console.WriteLine(String.Format("Most Common: {0} Percentage {1}", print(mostCommon.obj), mostCommon.Percentage));
             Console.WriteLine(String.Format("Least Common: {0} Percentage {1}", print(leastCommon.obj), leastCommon.Percentage));
 
-            var tmpItem = new Users {LivesInMaryland = true, HasWinPhone = true};
+            var tmpItem = new Users { LivesInMaryland = true, HasWinPhone = true };
 
             var completeItem = engine.GetCompleteItem(tmpItem);
 
@@ -56,6 +54,55 @@ namespace jcANALYTICS.ConsoleTests {
                 foreach (var item in items) {
                     sw.WriteLine(print(item.obj) + " " + item.Count);
                 }
+            }
+        }
+
+        private static void reductionTest(List<Users> users) {
+            var now = DateTime.Now;
+
+            var reduced = users.ReduceParallel();
+
+            var parallelTime = DateTime.Now.Subtract(now).TotalSeconds;
+            
+            Console.WriteLine($"Reduced from {users.Count()} to {reduced.Count()}");
+
+            now  = DateTime.Now;
+
+            reduced = users.Reduce();
+
+            var singleTime = DateTime.Now.Subtract(now).TotalSeconds;
+            
+            now = DateTime.Now;
+
+            reduced = users.ReduceAuto();
+
+            var autoTime = DateTime.Now.Subtract(now).TotalSeconds;
+
+            now = DateTime.Now;
+
+            reduced = users.ReduceParallelOptimized(false);
+
+            var optTime = DateTime.Now.Subtract(now).TotalSeconds;
+            
+            Console.WriteLine("Parallel\tSingle\t\tAuto\t\tOptimized");
+            Console.WriteLine($"{parallelTime}\t{singleTime}\t{autoTime}\t{optTime}\n");
+
+            Console.WriteLine($"Reduced from {users.Count()} to {reduced.Count()}");
+        }
+
+        static void Main(string[] args) {
+            var users = generateData(Convert.ToInt32(args[0]));
+
+            Console.WriteLine("1)Prediction Test");
+            Console.WriteLine("2)Reduction Test");
+
+            switch (Console.ReadLine()) {
+                case "1":
+                    predictionTest(users);
+                    break;
+                case "2":
+                    reductionTest(users);
+                    break;
             }
 
             Console.ReadKey();
