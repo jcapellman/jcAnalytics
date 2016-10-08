@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jcANALYTICS.Lib", "jcANALYTICS.Lib\jcANALYTICS.Lib.csproj", "{ED21E2C2-A16D-4D10-8CE6-8EB7ADB26854}"
 EndProject
@@ -26,9 +26,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_AssemblyInfoFilename = jcANALYTICS.Lib\Properties\AssemblyInfo.cs
-		BuildVersion_UpdateFileVersion = True
-		BuildVersion_UpdateAssemblyVersion = True
 		BuildVersion_BuildVersioningStyle = None.None.Increment.MonthAndDayStamp
+		BuildVersion_UpdateAssemblyVersion = True
+		BuildVersion_UpdateFileVersion = True
+		BuildVersion_AssemblyInfoFilename = jcANALYTICS.Lib\Properties\AssemblyInfo.cs
 	EndGlobalSection
 EndGlobal

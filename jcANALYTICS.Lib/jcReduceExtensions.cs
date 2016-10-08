@@ -14,7 +14,6 @@ namespace jcANALYTICS.Lib {
         public static List<T> ReduceAuto<T>(this List<T> originalSet, bool subSample = false) {
             return (originalSet.Count() > ParallelThreshold ? originalSet.ReduceParallelOptimized(subSample) : originalSet.Reduce());
         }
-
         
         public static List<T> Reduce<T>(this List<T> originalSet) {
             var reduced = ImmutableDictionary<int, T>.Empty;

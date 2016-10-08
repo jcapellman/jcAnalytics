@@ -6,7 +6,7 @@ using jcANALYTICS.Lib.Transports;
 namespace jcANALYTICS.ConsoleTests {
     [Serializable]
     public class Users : jcAnalyticsBaseObject {
-        [Tally]("Has iOS")
+        [Tally("Has iOS")]
         public bool? HasIOS { get; set; }
 
         [Tally]

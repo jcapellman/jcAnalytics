@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using jcANALYTICS.Lib;
 
 namespace jcANALYTICS.ConsoleTests {
@@ -25,7 +24,8 @@ namespace jcANALYTICS.ConsoleTests {
             return users;
         }
 
-        private static string print(Users user) { return String.Format("Has Android? {0} - Has iPhone? {1} - Has Windows Phone? {2} - Lives in Maryland? {3}", user.HasAndroid.Value, user.HasIOS.Value, user.HasWinPhone.Value, user.LivesInMaryland.Value); }
+        private static string print(Users user) =>
+            $"Has Android? {user.HasAndroid.Value} - Has iPhone? {user.HasIOS.Value} - Has Windows Phone? {user.HasWinPhone.Value} - Lives in Maryland? {user.LivesInMaryland.Value}";
 
         private static void predictionTest(List<Users> users) {
             var engine = new jcAEngine<Users>();
@@ -39,14 +39,14 @@ namespace jcANALYTICS.ConsoleTests {
             var mostCommon = engine.GetMostCommon();
             var leastCommon = engine.GetLeastCommon();
 
-            Console.WriteLine(String.Format("Most Common: {0} Percentage {1}", print(mostCommon.obj), mostCommon.Percentage));
-            Console.WriteLine(String.Format("Least Common: {0} Percentage {1}", print(leastCommon.obj), leastCommon.Percentage));
+            Console.WriteLine($"Most Common: {print(mostCommon.obj)} Percentage {mostCommon.Percentage}");
+            Console.WriteLine($"Least Common: {print(leastCommon.obj)} Percentage {leastCommon.Percentage}");
 
             var tmpItem = new Users { LivesInMaryland = true, HasWinPhone = true };
 
             var completeItem = engine.GetCompleteItem(tmpItem);
 
-            Console.WriteLine(String.Format("Complete Object: {0}", print(completeItem)));
+            Console.WriteLine($"Complete Object: {print(completeItem)}");
 
             using (var sw = new StreamWriter("test.txt")) {
                 var items = engine.GetGroupItems();
@@ -63,15 +63,15 @@ namespace jcANALYTICS.ConsoleTests {
             var reduced = users.ReduceParallel();
 
             var parallelTime = DateTime.Now.Subtract(now).TotalSeconds;
-            
+
             Console.WriteLine($"Reduced from {users.Count()} to {reduced.Count()}");
 
-            now  = DateTime.Now;
+            now = DateTime.Now;
 
             reduced = users.Reduce();
 
             var singleTime = DateTime.Now.Subtract(now).TotalSeconds;
-            
+
             now = DateTime.Now;
 
             reduced = users.ReduceAuto();
@@ -83,7 +83,7 @@ namespace jcANALYTICS.ConsoleTests {
             reduced = users.ReduceParallelOptimized(false);
 
             var optTime = DateTime.Now.Subtract(now).TotalSeconds;
-            
+
             Console.WriteLine("Parallel\tSingle\t\tAuto\t\tOptimized");
             Console.WriteLine($"{parallelTime}\t{singleTime}\t{autoTime}\t{optTime}\n");
 
@@ -91,7 +91,13 @@ namespace jcANALYTICS.ConsoleTests {
         }
 
         static void Main(string[] args) {
-            var users = generateData(Convert.ToInt32(args[0]));
+            int testCaseSize = 50;
+
+            if (args.Length > 0) {
+                testCaseSize = Convert.ToInt32(args[0]);
+            }
+
+            var users = generateData(testCaseSize);
 
             Console.WriteLine("1)Prediction Test");
             Console.WriteLine("2)Reduction Test");
