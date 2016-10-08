@@ -90,8 +90,31 @@ namespace jcANALYTICS.ConsoleTests {
             Console.WriteLine($"Reduced from {users.Count()} to {reduced.Count()}");
         }
 
+        private static void reductionImmutableVsConcurrentTest(List<Users> users) {
+            var reduced = users.ReduceParallel();
+
+            Console.WriteLine($"Reduced from {users.Count()} to {reduced.Count()}");
+
+            var now = DateTime.Now;
+
+            reduced = users.Reduce();
+
+            var immutableTime = DateTime.Now.Subtract(now).TotalSeconds;
+
+            now = DateTime.Now;
+
+            reduced = users.Reduce(false);
+
+            var concurrentTime = DateTime.Now.Subtract(now).TotalSeconds;
+
+            Console.WriteLine("Immutable\tConcurrent");
+            Console.WriteLine($"{immutableTime}\t{concurrentTime}\n");
+
+            Console.WriteLine($"Reduced from {users.Count()} to {reduced.Count()}");
+        }
+
         static void Main(string[] args) {
-            int testCaseSize = 50;
+            int testCaseSize = 1000;
 
             if (args.Length > 0) {
                 testCaseSize = Convert.ToInt32(args[0]);
@@ -99,19 +122,26 @@ namespace jcANALYTICS.ConsoleTests {
 
             var users = generateData(testCaseSize);
 
-            Console.WriteLine("1)Prediction Test");
-            Console.WriteLine("2)Reduction Test");
+            while (true) {
+                Console.WriteLine("1)Prediction Test");
+                Console.WriteLine("2)Reduction Test");
+                Console.WriteLine("3)Reduction (Immutable vs Concurrent)");
+                Console.WriteLine("4)Exit");
 
-            switch (Console.ReadLine()) {
-                case "1":
-                    predictionTest(users);
-                    break;
-                case "2":
-                    reductionTest(users);
-                    break;
+                switch (Console.ReadLine()) {
+                    case "1":
+                        predictionTest(users);
+                        break;
+                    case "2":
+                        reductionTest(users);
+                        break;
+                    case "3":
+                        reductionImmutableVsConcurrentTest(users);
+                        break;
+                    case "4":
+                        return;
+                }
             }
-
-            Console.ReadKey();
         }
     }
 }

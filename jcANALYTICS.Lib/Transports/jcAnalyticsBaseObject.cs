@@ -21,7 +21,6 @@ namespace jcANALYTICS.Lib.Transports {
                 if (newValue.ToString() != originalValue.ToString()) {
                     return false;
                 }
-
             }
 
             return true;
@@ -46,28 +45,28 @@ namespace jcANALYTICS.Lib.Transports {
         }
 
         public override int GetHashCode() {
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
+            var bf = new BinaryFormatter();
+            var ms = new MemoryStream();
+
             bf.Serialize(ms, this);
+
             var tmp = ms.ToArray();
 
             return computeHash(tmp);
         }
 
         private static int computeHash(params byte[] data) {
-            unchecked
-            {
+            unchecked {
                 const int p = 16777619;
-                int hash = (int)2166136261;
 
-                for (int i = 0; i < data.Length; i++)
-                    hash = (hash ^ data[i]) * p;
+                var hash = data.Aggregate((int) 2166136261, (current, t) => (current ^ t)*p);
 
                 hash += hash << 13;
                 hash ^= hash >> 7;
                 hash += hash << 3;
                 hash ^= hash >> 17;
                 hash += hash << 5;
+
                 return hash;
             }
         }

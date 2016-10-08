@@ -1,0 +1,15 @@
+{
+  "name": "jc-analytics.persistance.node-js",
+  "version": "0.0.0",
+  "description": "jcANALYTICS.Persistance.NodeJS",
+  "main": "server.js",
+  "author": {
+    "name": "jcape"
+  },
+  "dependencies": {
+    "pm2": "^2.0.18",
+    "redis": "^2.6.2",
+    "restify": "^4.1.1",
+    "restify-router": "^0.2.1"
+  }
+}

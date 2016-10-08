@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
@@ -15,33 +16,33 @@ namespace jcANALYTICS.Lib {
         private ImmutableList<jcAnalyticsGroupItem<T>> _storeValues = ImmutableList<jcAnalyticsGroupItem<T>>.Empty;
 
         private int _originalDataCount;
-        private readonly bool _enableMT;
+        private readonly bool _enableMt;
 
-        public jcAEngine(bool enableMT = true) {
-            _enableMT = enableMT;
+        public jcAEngine(bool enableMt = true) {
+            _enableMt = enableMt;
         }
 
         public void AnalyzeData(List<T> data) {
             _originalDataCount = data.Count;
 
-            if (_originalDataCount > 1000 && _enableMT) {
-                analyzeDataMT(data);
+            if (_originalDataCount > 1000 && _enableMt) {
+                AnalyzeDataMt(data);
             } else {
-                analyzeDataST(data);
+                AnalyzeDataSt(data);
             }
         }
 
-        private void analyzeDataMT(List<T> data) {
-            Parallel.ForEach(data, processItem);
+        private void AnalyzeDataMt(IEnumerable<T> data) {
+            Parallel.ForEach(data, ProcessItem);
         }
 
-        private void analyzeDataST(List<T> data) {
+        private void AnalyzeDataSt(IEnumerable<T> data) {
             foreach (var item in data) {
-                processItem(item);
+                ProcessItem(item);
             }
-        }
+        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 
-        private void processItem(T item) {
+        private void ProcessItem(T item) {
             var hashCode = item.GetHashCode();
 
             if (_mainStore.ContainsKey(hashCode)) {
@@ -63,18 +64,26 @@ namespace jcANALYTICS.Lib {
         public jcAnalyticsMaxResultItem<T> GetMostCommon() {
             var val = _storeValues.OrderByDescending(a => a.Count).FirstOrDefault();
 
+            if (val == null) {
+                throw new Exception("Could not get most common");
+            }
+
             return new jcAnalyticsMaxResultItem<T> { Count = val.Count, obj = val.obj, Percentage = 100 * ((double)val.Count / _originalDataCount) };
         }
 
         public jcAnalyticsMinResultItem<T> GetLeastCommon() {
             var val = _storeValues.OrderBy(a => a.Count).FirstOrDefault();
 
+            if (val == null) {
+                throw new Exception("Could not get most common");
+            }
+
             return new jcAnalyticsMinResultItem<T> { Count = val.Count, obj = val.obj, Percentage = 100 * ((double)val.Count / _originalDataCount) };
         }
 
         public List<jcAnalyticsGroupItem<T>> GetGroupItems() { return _storeValues.ToList(); }
 
-        private T getCloseItems(T incompleteItem) {
+        private T GetCloseItems(T incompleteItem) {
             T tmpItem = null;
 
             var maxCount = 0;
@@ -93,23 +102,27 @@ namespace jcANALYTICS.Lib {
 
                     var newValue = field.GetValue(item.obj, null);
 
-                    if (newValue.ToString() != originalValue.ToString()) {
-                        okToAdd = false;
-                        break;
+                    if (newValue.ToString() == originalValue.ToString()) {
+                        continue;
                     }
+
+                    okToAdd = false;
+                    break;
                 }
 
-                if (okToAdd && item.Count > maxCount) {
-                    tmpItem = item.obj;
-                    maxCount = item.Count;
+                if (!okToAdd || item.Count <= maxCount) {
+                    continue;
                 }
+
+                tmpItem = item.obj;
+                maxCount = item.Count;
             }
 
             return tmpItem;
         } 
 
         public T GetCompleteItem(T incompleteItem) {
-            return getCloseItems(incompleteItem);
+            return GetCloseItems(incompleteItem);
         }
     }
 }

@@ -14,30 +14,46 @@ namespace jcANALYTICS.Lib {
         public static List<T> ReduceAuto<T>(this List<T> originalSet, bool subSample = false) {
             return (originalSet.Count() > ParallelThreshold ? originalSet.ReduceParallelOptimized(subSample) : originalSet.Reduce());
         }
-        
-        public static List<T> Reduce<T>(this List<T> originalSet) {
-            var reduced = ImmutableDictionary<int, T>.Empty;
 
-            foreach (var item in originalSet) {
-                var hash = item.GetHashCode();
+        public static List<T> Reduce<T>(this List<T> originalSet, bool useImmutable = true) {
+            if (useImmutable) {
+                var reduced = ImmutableDictionary<int, T>.Empty;
 
-                if (reduced.ContainsKey(hash)) {
-                    continue;
+                foreach (var item in originalSet) {
+                    var hash = item.GetHashCode();
+
+                    if (reduced.ContainsKey(hash)) {
+                        continue;
+                    }
+
+                    reduced = reduced.Add(hash, item);
                 }
 
-                reduced = reduced.Add(hash, item);
-            }
+                return reduced.Values.ToList();
+            } else {
+                var reduced = new ConcurrentDictionary<int, T>();
 
-            return reduced.Values.ToList();
+                foreach (var item in originalSet) {
+                    var hash = item.GetHashCode();
+
+                    if (reduced.ContainsKey(hash)) {
+                        continue;
+                    }
+
+                    reduced[hash] = item;
+                }
+
+                return reduced.Values.ToList();
+            }
         }
 
         public static List<T> ReduceParallelOptimized<T>(this List<T> originalSet, bool subSample = false) {
             var hashes = new ConcurrentDictionary<int, T>();
-            
+
             if (subSample) {
                 var random = new Random(DateTime.Now.Millisecond);
 
-                return originalSet.Take(random.Next(1, (int) Math.Log(originalSet.Count()))).ToList();
+                return originalSet.Take(random.Next(1, (int)Math.Log(originalSet.Count()))).ToList();
             }
 
             Parallel.ForEach(originalSet, item => {
@@ -55,7 +71,7 @@ namespace jcANALYTICS.Lib {
 
         public static List<T> ReduceParallel<T>(this List<T> originalSet) {
             var reduced = ImmutableDictionary<int, T>.Empty;
-            
+
             Parallel.ForEach(originalSet, item => {
                 var hash = item.GetHashCode();
 
@@ -67,6 +83,6 @@ namespace jcANALYTICS.Lib {
             });
 
             return reduced.Values.ToList();
-        }         
+        }
     }
 }
